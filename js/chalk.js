@@ -1,5 +1,7 @@
 $(document).ready(chalkboard);
 function chalkboard(){
+	$('#chalkboard').remove();
+	$('.chalk').remove();
 	$('body').prepend('<canvas id="chalkboard"></canvas>');
 	$('body').prepend('<div class="chalk"></div>');
 	
@@ -106,4 +108,9 @@ function chalkboard(){
 		xLast = x;
 		yLast = y;	
 		}
+
+	$(window).resize(function(){
+			chalkboard();
+		});
+
 	} 
