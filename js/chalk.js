@@ -1,4 +1,5 @@
 $(document).ready(chalkboard);
+
 function chalkboard(){
 	$('#chalkboard').remove();
 	$('.chalk').remove();
@@ -18,9 +19,12 @@ function chalkboard(){
 	var mouseX = 0;
 	var mouseY = 0;
 	var mouseD = false;
+	var eraser = false;
 	var xLast = 0;
 	var yLast = 0;
 	var brushDiameter = 7;
+	var eraserWidth = 50;
+	var eraserHeight = 100;
 	
 	$('#chalkboard').css('cursor','none');
 	document.onselectstart = function(){ return false; };
@@ -69,7 +73,11 @@ function chalkboard(){
 			$('.chalk').css('left',(mouseX-0.5*brushDiameter)+'px');
 			$('.chalk').css('top',(mouseY-0.5*brushDiameter)+'px');
 			if(mouseD){
-				draw(mouseX,mouseY);
+				if(eraser){
+					erase(mouseX,mouseY);
+				}else{
+					draw(mouseX,mouseY);
+					}
 				}
 		}else{
 			$('.chalk').css('top',height-10);
@@ -79,11 +87,29 @@ function chalkboard(){
 		mouseD = true;
 		xLast = mouseX;
 		yLast = mouseY;
-		draw(mouseX+1,mouseY+1);
+		if(evt.button == 2){
+			erase(mouseX,mouseY);
+			eraser = true;
+			$('.chalk').addClass('eraser');
+		}else{			
+			draw(mouseX+1,mouseY+1);
+			}
 		});
 	$(document).mouseup(function(evt){ 
 		mouseD = false;
+		if(evt.button == 2){
+			eraser = false;
+			$('.chalk').removeClass('eraser');
+			}
 		});
+
+	$(document).keyup(function(evt){
+		if(evt.keyCode == 32){
+				ctx.clearRect(0,0,width,height);
+			}
+		});
+
+	document.oncontextmenu = function() {return false;};
          
 	function draw(x,y){
 		ctx.strokeStyle = 'rgba(255,255,255,'+(0.4+Math.random()*0.2)+')';
@@ -103,11 +129,14 @@ function chalkboard(){
 			var yRandom = yCurrent+(Math.random()-0.5)*brushDiameter*1.2;
     		ctx.clearRect( xRandom, yRandom, Math.random()*2+2, Math.random()+1);
 			}
-            
 
 		xLast = x;
 		yLast = y;	
 		}
+
+	function erase(x,y){
+		ctx.clearRect (x-0.5*eraserWidth,y-0.5*eraserHeight,eraserWidth,eraserHeight);
+	}
 
 	$(window).resize(function(){
 			chalkboard();
