@@ -3,6 +3,8 @@ $(document).ready(chalkboard);
 function chalkboard(){
 	$('#chalkboard').remove();
 	$('.chalk').remove();
+	$('body').prepend('<div class="panel"><a class="link" target="_blank">Save</a></div>');
+	$('body').prepend('<img src="../img/bg.png" id="pattern" width=50 height=50>');
 	$('body').prepend('<canvas id="chalkboard"></canvas>');
 	$('body').prepend('<div class="chalk"></div>');
 	
@@ -32,6 +34,8 @@ function chalkboard(){
 	ctx.strokeStyle = 'rgba(255,255,255,0.5)';	
     ctx.lineWidth = brushDiameter;
 	ctx.lineCap = 'round';
+
+	var patImg = document.getElementById('pattern');
 
 	document.addEventListener('touchmove', function(evt) {
         var touch = evt.touches[0];
@@ -91,23 +95,33 @@ function chalkboard(){
 			erase(mouseX,mouseY);
 			eraser = true;
 			$('.chalk').addClass('eraser');
-		}else{			
-			draw(mouseX+1,mouseY+1);
-			}
-		});
+		}else{
+			if(!$('.panel').is(':hover')){
+				draw(mouseX+1,mouseY+1);
+			}		
+		}
+	});
+
 	$(document).mouseup(function(evt){ 
 		mouseD = false;
 		if(evt.button == 2){
 			eraser = false;
 			$('.chalk').removeClass('eraser');
-			}
-		});
+		}
+	});
 
 	$(document).keyup(function(evt){
 		if(evt.keyCode == 32){
-				ctx.clearRect(0,0,width,height);
-			}
-		});
+			ctx.clearRect(0,0,width,height);
+			layPattern();
+		}
+	});
+
+	$(document).keyup(function(evt){
+		if(evt.keyCode == 83){
+			changeLink();
+		}
+	});
 
 	document.oncontextmenu = function() {return false;};
          
@@ -131,15 +145,57 @@ function chalkboard(){
 			}
 
 		xLast = x;
-		yLast = y;	
-		}
+		yLast = y;
+	}
 
 	function erase(x,y){
 		ctx.clearRect (x-0.5*eraserWidth,y-0.5*eraserHeight,eraserWidth,eraserHeight);
 	}
 
-	$(window).resize(function(){
-			chalkboard();
-		});
+	$('.link').click(function(evt){
 
-	} 
+		$('.download').remove();
+
+		var imgCanvas = document.createElement('canvas');
+		var imgCtx = imgCanvas.getContext("2d");
+		var pattern = imgCtx.createPattern(patImg,'repeat');
+
+		imgCanvas.width = width;
+		imgCanvas.height = height;
+
+		imgCtx.fillStyle = pattern;
+		imgCtx.rect(0,0,width,height);
+		imgCtx.fill();
+
+
+		var layimage = new Image;
+		layimage.src = canvas.toDataURL("image/png");
+
+		setTimeout(function(){
+
+			imgCtx.drawImage(layimage,0,0);
+
+			var compimage = imgCanvas.toDataURL("image/png");//.replace('image/png','image/octet-stream');
+
+			$('.panel').append('<a href="'+compimage+'" download="chalkboard.png" class="download">Download</a>');
+			$('.download').click(function(){
+				IEsave(compimage);
+			});
+		
+		}, 500);
+
+
+	});
+
+	function IEsave(ctximage){
+		setTimeout(function(){
+			var win = window.open();
+			$(win.document.body).html('<img src="'+ctximage+'" name="chalkboard.png">');
+		},500);
+	}
+
+	$(window).resize(function(){
+		// chalkboard();
+	});
+
+} 
