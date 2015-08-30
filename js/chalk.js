@@ -4,7 +4,7 @@ function chalkboard(){
 	$('#chalkboard').remove();
 	$('.chalk').remove();
 	$('body').prepend('<div class="panel"><a class="link" target="_blank">Save</a></div>');
-	$('body').prepend('<img src="../img/bg.png" id="pattern" width=50 height=50>');
+	$('body').prepend('<img src="img/bg.png" id="pattern" width=50 height=50>');
 	$('body').prepend('<canvas id="chalkboard"></canvas>');
 	$('body').prepend('<div class="chalk"></div>');
 	
