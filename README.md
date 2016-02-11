@@ -14,6 +14,6 @@ Fullscreen Javascript canvas implementation of a chalkboard with a realistic cha
 MIT licensed
 Copyright (C) 2015 Mohamed Moustafa, [http://mmoustafa.com](http://mmoustafa.com)
 
-Adapted into a [http://courses.telematique.eu/reveal.js-plugins/chalkboard-demo.html#/](reveal.js plugin "Plugin") by Asvin Goel.
+Adapted into a [http://courses.telematique.eu/reveal.js-plugins/chalkboard-demo.html#/](reveal.js plugin) by Asvin Goel.
 
 
