@@ -2,7 +2,7 @@
 
 Fullscreen Javascript canvas implementation of a chalkboard with a realistic chalk effect and touch support.
 
-**Demo:** [http://mmoustafa.com/mybox/chalk](http://mmoustafa.com/experiments/chalk "Chalkboard")
+**Demo:** [http://mmoustafa.com/experiments/chalk](http://mmoustafa.com/experiments/chalk "Chalkboard")
 
 **Instructions:** 
 - Left click and drag to draw
