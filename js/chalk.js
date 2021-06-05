@@ -1,9 +1,14 @@
 $(document).ready(chalkboard);
 
 function chalkboard(){
+
 	$('#chalkboard').remove();
 	$('.chalk').remove();
 	$('body').prepend('<div class="panel"><a class="link" target="_blank">Save</a></div>');
+	var dt = new Date();
+	$('body').prepend('<div class="date">' + dt.toLocaleDateString() + '</div>');
+	$('body').prepend('<div class="subject"><form> <label for="subject">Subject Name:</label><input type="text" id="subject" name="subject"></form> </div>');
+	$('body').prepend('<div class="topic"><form> <label for="topic">Topic Name:  </label><input type="text" id="topic" name="topic"></form> </div>');
 	$('body').prepend('<img src="img/bg.png" id="pattern" width=50 height=50>');
 	$('body').prepend('<canvas id="chalkboard"></canvas>');
 	$('body').prepend('<div class="chalk"></div>');
@@ -45,7 +50,6 @@ function chalkboard(){
             evt.preventDefault();
             $('.chalk').css('left', mouseX + 'px');
             $('.chalk').css('top', mouseY + 'px');
-            //$('.chalk').css('display', 'none');
             if (mouseD) {
                 draw(mouseX, mouseY);
             }
