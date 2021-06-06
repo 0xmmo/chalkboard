@@ -5,10 +5,12 @@ function chalkboard(){
 	$('#chalkboard').remove();
 	$('.chalk').remove();
 	$('body').prepend('<div class="panel"><a class="link" target="_blank">Save</a></div>');
+	$('body').prepend('<div class="panel2"><a onClick="window.location.reload()">Clear Board</a></div>');
 	var dt = new Date();
 	$('body').prepend('<div class="date">' + dt.toLocaleDateString() + '</div>');
 	$('body').prepend('<div class="subject"><form> <label for="subject">Subject Name:</label><input type="text" id="subject" name="subject"></form> </div>');
 	$('body').prepend('<div class="topic"><form> <label for="topic">Topic Name:  </label><input type="text" id="topic" name="topic"></form> </div>');
+	$('body').prepend('<div class="draggable"><div id="mydiv"><div id="mydivheader">Notes (Drag to Move)</div><button type="button" class="collapsible">Click to expand / collapse</button><div class="content"><textarea id = "textbox" > </textarea></div></div></div>');
 	$('body').prepend('<img src="img/bg.png" id="pattern" width=50 height=50>');
 	$('body').prepend('<canvas id="chalkboard"></canvas>');
 	$('body').prepend('<div class="chalk"></div>');
@@ -160,10 +162,11 @@ function chalkboard(){
 
 		$('.download').remove();
 
+		
+
 		var imgCanvas = document.createElement('canvas');
 		var imgCtx = imgCanvas.getContext("2d");
 		var pattern = imgCtx.createPattern(patImg,'repeat');
-
 		imgCanvas.width = width;
 		imgCanvas.height = height;
 
@@ -178,7 +181,8 @@ function chalkboard(){
 		setTimeout(function(){
 
 			imgCtx.drawImage(layimage,0,0);
-
+			imgCanvas.crossOrigin = 'Anonymous';
+			imgCanvas.allowTaint = false;
 			var compimage = imgCanvas.toDataURL("image/png");//.replace('image/png','image/octet-stream');
 
 			$('.panel').append('<a href="'+compimage+'" download="chalkboard.png" class="download">Download</a>');
@@ -194,12 +198,70 @@ function chalkboard(){
 	function IEsave(ctximage){
 		setTimeout(function(){
 			var win = window.open();
-			$(win.document.body).html('<img src="'+ctximage+'" name="chalkboard.png">');
+			$(win.document.body).html('<img src="'+ctximage+'" crossorigin name="chalkboard.png">');
 		},500);
 	}
 
 	$(window).resize(function(){
 		// chalkboard();
 	});
+
+	dragElement(document.getElementById("mydiv"));
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "header")) {
+    // if present, the header is where you move the DIV from:
+    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+  } else {
+    // otherwise, move the DIV from anywhere inside the DIV:
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    // stop moving when mouse button is released:
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
 
 } 
