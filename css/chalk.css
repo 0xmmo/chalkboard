@@ -28,6 +28,7 @@ html,body{
 	cursor:none;
 	z-index:2;
 	}
+
 .eraser{
 	width: 50px;
 	height: 100px;
@@ -46,6 +47,25 @@ html,body{
 	margin:1em;
 	bottom:0;
 	left:0;
+	z-index:5;
+}
+
+.draggable{
+	position: absolute;
+	width: 100%;
+	bottom:120px;
+	right:0;
+}
+
+.panel2{
+	display: block;
+	font-size: 18px;
+	color: #333;
+	font-family: sans-serif;
+	position:absolute;
+	margin:1em;
+	bottom:0;
+	left:100px;
 	z-index:5;
 }
 
@@ -69,7 +89,6 @@ html,body{
 	font-family: sans-serif;
 	position:absolute;
 	margin:1em;
-	bottom:0;
 	left:0;
 	top:0;
 	z-index:5;
@@ -82,7 +101,6 @@ html,body{
 	font-family: sans-serif;
 	position:absolute;
 	margin:1em;
-	bottom:0;
 	left:0;
 	top:30px;
 	z-index:5;
@@ -93,10 +111,12 @@ label {
     clear: both;
     float:left;
     margin-right:15px;
+	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serifs;
+	font-style: italic;
 }
 
 
-.panel a{
+.panel a, .panel2 a{
 	display: inline-block;
 	padding: 0.5em 1em;
 	background:#ccc;
@@ -105,6 +125,67 @@ label {
 	opacity: 0.8;
 	margin-right: 0.5em;
 }
-.panel a:hover{
+
+.panel a:hover, .panel2 a:hover{
 	opacity: 1;
 }
+
+input{
+	background-color: #333;
+	color: #ccc;
+	border-bottom: 2px white solid;
+	border-left: transparent 4px solid;
+	cursor: pointer;
+	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serifs;
+	font-style: italic;
+	width: 200px;
+}
+
+#mydiv {
+	position: absolute;
+	z-index: 9;
+	background-color: #f1f1f1;
+	border: 3px solid #d3d3d3;
+	text-align: center;
+	width: 40%;
+  }
+  
+  #mydivheader {
+	padding: 10px;
+	cursor: move;
+	z-index: 10;
+	background-color: #333;
+	color: #fff;
+  }
+
+  .collapsible {
+	  background-color: #999;
+	color: #444;
+	cursor: pointer;
+	padding-left: 18px;
+	height: 2px;
+	resize: vertical;
+	width: 100%;
+	border: none;
+	text-align: left;
+	outline: none;
+	font-size: 15px;
+  }
+ 
+  .active, .collapsible:hover {
+	background-color: #ccc;
+  }
+  
+  .content {
+	  height: 180px;
+	padding: 0 18px;
+	display: none;
+	overflow: hidden;
+	background-color: #f1f1f1;
+  }
+
+  #textbox{
+	  width: 100%;
+	  height: 90%;
+	  resize: vertical;
+  }
